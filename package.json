@@ -2,8 +2,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server",
-        "dev": "nodemon server",
-        "seed": "node utils/seed"
+        "dev": "nodemon server"
       },
       "dependencies": {
         "express": "^4.17.1",
