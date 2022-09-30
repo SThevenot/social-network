@@ -4,15 +4,20 @@ const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
-    username: { type: String, required: true, unique: true, trim: true },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
-      validate: {
-        validator: validator.isEmail,
-        message: `{VALUE} is not a valid email`,
-      },
+      // match: [
+      //   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      //   "Use valid email",
+      // ]
     },
     thoughts: [
       {

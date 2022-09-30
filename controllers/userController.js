@@ -1,6 +1,6 @@
 /** @format */
 
-const { User, Application } = require("../models");
+const { User } = require("../models");
 
 module.exports = {
   getUsers(req, res) {
@@ -13,9 +13,41 @@ module.exports = {
       .select("-__v")
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "User not found" })
+          ? res.status(404).json({ message: "No user with that ID" })
           : res.json(user)
       )
-      .catch((err) => res.json(500).json(err));
+      .catch((err) => res.status(500).json(err));
+  },
+  createUser(req, res) {
+    User.create(req.body)
+      .then((users) => res.json(users))
+      .catch((err) => res.status(500).json(err));
+  },
+  updateUser(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((users) =>
+        !users
+          ? res.status(404).json({ message: "No user with this Id" })
+          : res.json(users)
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+  deleteUser(req, res) {
+    User.findOneAndRemove({ _id: req.params.userId })
+      .then((users) =>
+        !users
+          ? res.status(404).json({ message: "no user with this Id" })
+          : res.json({ message: "User deleted!" })
+      )
+      .catch((err) => {
+        res.status(500).json(err);
+      });
   },
 };
